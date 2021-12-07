@@ -1,0 +1,3 @@
+[submodule "deps/piranha"]
+	path = deps/piranha
+	url = https://github.com/bluescarni/piranha
