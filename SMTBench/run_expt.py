@@ -15,8 +15,10 @@ if not os.path.isfile(proc_path):
 print("SMTPlan benchmark")
 
 
-domain = "../benchmarks/generator_nonlinear/gen_nonlinear_domain.pddl"
-problem = "../benchmarks/generator_nonlinear/gen_nonlinear_prob07.pddl"
+# domain = "../benchmarks/generator_nonlinear/gen_nonlinear_domain.pddl"
+# problem = "../benchmarks/generator_nonlinear/gen_nonlinear_prob07.pddl"
+domain = "pick_place_domain.pddl"
+problem = "p_3_block.pddl"
 
 proc = subprocess.Popen([proc_path, domain, problem], stdout=subprocess.PIPE, universal_newlines=True)
 
