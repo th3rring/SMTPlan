@@ -5,7 +5,7 @@ import shlex
 import os.path
 import sys
 
-proc_path = "../SMTPlan/build/SMTPlan"
+proc_path = "../SMTPlan/build/SMTPlanExpt"
 
 # Print error and exit if executable isn't found
 if not os.path.isfile(proc_path):
