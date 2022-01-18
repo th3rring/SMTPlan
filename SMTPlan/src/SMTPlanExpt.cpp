@@ -175,32 +175,41 @@ int main(int argc, char *argv[]) {
   // parse domain and problem
   TIM::performTIMAnalysis(&argv[1]);
   Inst::SimpleEvaluator::setInitialState();
+
   VAL::operator_list::const_iterator os =
       VAL::current_analysis->the_domain->ops->begin();
+
   for (; os != VAL::current_analysis->the_domain->ops->end(); ++os) {
     Inst::instantiatedOp::instantiate(*os, VAL::current_analysis->the_problem,
                                       *VAL::theTC);
   };
+
   Inst::instantiatedOp::createAllLiterals(VAL::current_analysis->the_problem,
                                           VAL::theTC);
   Inst::instantiatedOp::filterOps(VAL::theTC);
 
   // save static predicates
   if (VAL::current_analysis->the_domain->predicates) {
+
     VAL::pred_decl_list *predicates =
         VAL::current_analysis->the_domain->predicates;
+
     for (VAL::pred_decl_list::const_iterator ci = predicates->begin();
          ci != predicates->end(); ci++) {
+
       VAL::holding_pred_symbol *hps = HPS((*ci)->getPred());
       bool isStatic = true;
+
       for (VAL::holding_pred_symbol::PIt i = hps->pBegin(); i != hps->pEnd();
            ++i) {
+
         TIM::TIMpredSymbol *tps = const_cast<TIM::TIMpredSymbol *>(
             static_cast<const TIM::TIMpredSymbol *>(*i));
         if (!tps->isDefinitelyStatic() || !tps->isStatic()) {
           isStatic = false;
           break;
         }
+
       }
       pi.staticPredicateMap[hps->getName()] = isStatic;
     }
@@ -208,25 +217,29 @@ int main(int argc, char *argv[]) {
 
   // save static functions
   if (VAL::current_analysis->the_domain->functions) {
+
     VAL::func_decl_list *functions =
         VAL::current_analysis->the_domain->functions;
+
     for (VAL::func_decl_list::const_iterator ci = functions->begin();
          ci != functions->end(); ci++) {
+
       VAL::extended_func_symbol *efs = static_cast<VAL::extended_func_symbol *>(
           const_cast<VAL::func_symbol *>((*ci)->getFunction()));
       pi.staticFunctionMap[efs->getName()] = efs->isStatic();
+
     }
   }
 
-  if (options.verbose)
-    fprintf(stdout, "Grounded:\t%f seconds\n", getElapsed());
+  // if (options.verbose)
+  fprintf(stdout, "Grounded: %f \n", getElapsed());
 
   // calculate boundary expressions for continuous change
   SMTPlan::Algebraist algebraist(VAL::current_analysis, options, pi);
   algebraist.processDomain();
 
-  if (options.verbose)
-    fprintf(stdout, "Algebra:\t%f seconds\n", getElapsed());
+  // if (options.verbose)
+  fprintf(stdout, "Algebra: %f \n", getElapsed());
 
   // begin search loop
   SMTPlan::Encoder *encoder;
@@ -247,8 +260,8 @@ int main(int argc, char *argv[]) {
 
     // generate encoding
     encoder->encode(i);
-    if (options.verbose)
-      fprintf(stdout, "Encoded %i:\t%f seconds\n", i, getElapsed());
+
+    fprintf(stdout, "Encoded %i: %f \n", i, getElapsed());
 
     // output to file
     std::ofstream pFile;
@@ -265,21 +278,19 @@ int main(int argc, char *argv[]) {
 
     if (result == z3::sat) {
       encoder->printModel();
-      if (options.verbose) {
-        fprintf(stdout, "Solved %i:\t%f seconds\n", i, getElapsed());
-        fprintf(stdout, "Total time:\t%f seconds\n", getTotalElapsed());
-      }
+
+      fprintf(stdout, "SAT Solution: %f \n", getElapsed());
+      fprintf(stdout, "Total time: %f \n", getTotalElapsed());
+
       delete encoder;
       return 0;
     }
 
-    if (options.verbose)
-      fprintf(stdout, "Solved %i:\t%f seconds\n", i, getElapsed());
+    fprintf(stdout, "UNSAT Solution %i: %f \n", i, getElapsed());
   }
 
-  fprintf(stdout, "No plan found in %i happenings\n", options.upper_bound);
-  if (options.verbose)
-    fprintf(stdout, "Total time:\t%f seconds\n", getTotalElapsed());
+  fprintf(stdout, "Timeout at %i\n", options.upper_bound);
+  fprintf(stdout, "Total time: %f \n", getTotalElapsed());
 
   // delete *encoder;
 
