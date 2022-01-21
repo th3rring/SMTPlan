@@ -40,6 +40,7 @@ namespace SMTPlan {
 			}
 
 			if(opt->debug) {
+			// if(true) {
 
 				//events
 				std::map<int, std::vector<std::vector<z3::expr>>>::iterator eit = event_vars.begin();
@@ -70,9 +71,10 @@ namespace SMTPlan {
 
 				std::vector<std::vector<std::vector<z3::expr> > >::iterator lit = event_cascade_literal_vars.begin();
 				for(; lit != event_cascade_literal_vars.end(); lit++) {
-					for(int b=0; b<opt->cascade_bound; b++) {
+					// for(int b=0; b<opt->cascade_bound; b++) {
+					for(int b=0; b<1; b++) {
 						z3::expr v = m.eval((*lit)[h][b]);
-						if(eq(v,t)) std::cout << m.eval(time_vars[h]) << ":\t" << (*lit)[h][b] << std::endl;
+						if(eq(v,t)) std::cout << m.eval(time_vars[h]) << ":\t\t" << (*lit)[h][b] << std::endl;
 					}
 				}
 
