@@ -1,15 +1,11 @@
 #!/bin/python3
 # Author: Thomas Herring
-import sqlite3
 import sys
 from datetime import datetime
 from planner_process import PlannerProcess
+from database_manager import DatabaseManager
 from constants import *
 
-def data_generator(data):
-    for d in data:
-        yield d
-    
 # Set an upper bound on how many iterations we're allowing
 upper_bound = 20
 
@@ -35,13 +31,7 @@ print("Problem: {}".format(problem))
 print("Single experiment run...")
 
 # Create expt database, currently using unique datetime
-con = sqlite3.connect(experiments_dir + "expt_{}.db".format(datetime.now().strftime("%Y_%m_%d-%H:%M:%S")))
-cur = con.cursor()
-
-# Create a new table if one doesn't exist
-cur.execute("""CREATE TABLE IF NOT EXISTS experiments 
-(domain TEXT, problem TEXT, date TEXT, time TEXT, 
-sat INTEGER, grounded_time REAL, algebra_time REAL, sol_time REAL, iterations INTEGER, timeout INTEGER, total_time REAL, log TEXT)""")
+db = DatabaseManager(experiments_dir + "expt_{}.db".format(datetime.now().strftime("%Y_%m_%d-%H:%M:%S")))
 
 # Prepend directory on domain and problem
 domain = domain_dir + domain
@@ -54,7 +44,7 @@ proc = PlannerProcess(date, time)
 results = proc.run_expt(domain, problem, upper_bound, verbose)
 
 # Insert into the database
-cur.executemany("insert into experiments values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", data_generator([results]))
+db.insert_expt(results)
 
 print("Experiment date: {}".format(date))
 print("Experiment time: {}".format(time))
@@ -63,10 +53,7 @@ print("Experiment time: {}".format(time))
 if verbose:
     print(results[-1])
 
-# Save
-con.commit()
-
-# Exit!
-con.close()
+# Save and close
+db.save_and_close()
 sys.exit(0)
 
