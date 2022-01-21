@@ -23,7 +23,7 @@ class PlannerProcess:
         self.iterations_pattern = re.compile(r"(?<=Iterations:\s)\d*\.?\d*")
      
 
-    def run_expt(self, domain, problem, verbose):
+    def run_expt(self, domain, problem, upper_bound, verbose):
 
         proc = subprocess.Popen([proc_path, domain, problem, "-u", str(upper_bound)], stdout=subprocess.PIPE, universal_newlines=True)
         outs = proc.stdout.read()
