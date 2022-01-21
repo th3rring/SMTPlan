@@ -12,8 +12,6 @@ from datetime import datetime
 proc_path = "../SMTPlan/build/SMTPlanExpt"
 
 # Directories for domain, problem, and experiment files
-domain_dir = "domains/"
-problem_dir = "problems/"
 experiments_dir = "experiments/"
 
 # Print error and exit if executable isn't found

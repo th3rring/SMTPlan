@@ -280,6 +280,7 @@ int main(int argc, char *argv[]) {
       encoder->printModel();
 
       fprintf(stdout, "SAT Solution: %f \n", getElapsed());
+      fprintf(stdout, "Iterations: %i \n", i);
       fprintf(stdout, "Total time: %f \n", getTotalElapsed());
 
       delete encoder;
