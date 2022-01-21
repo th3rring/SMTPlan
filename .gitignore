@@ -28,3 +28,8 @@ SMTPlan/build
 *.exe
 *.out
 *.app
+
+SMTBench/.ipynb_checkpoints
+SMTBench/src/__pycache__
+SMTPlan/bin
+SMTPlan/src/SMTPlan
