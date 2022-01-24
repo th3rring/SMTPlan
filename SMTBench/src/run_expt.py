@@ -57,9 +57,11 @@ problems.remove(domain)
 date = datetime.now().strftime("%Y_%m_%d")
 time = datetime.now().strftime("%H:%M:%S")
 
+# Create process manager
 proc = PlannerProcess(date, time)
 results = []
 
+# Run actual experiment
 print("Running expt...")
 for p in problems:
     if verbose:

@@ -7,14 +7,14 @@ from database_manager import DatabaseManager
 from constants import *
 
 # Set an upper bound on how many iterations we're allowing
-upper_bound = 20
+upper_bound = 10
 
 # Set the domain
 domain = "conveyor_domain_transfer.pddl"
 
 # Choose a SAT or UNSAT problem
 # problem = "conveyor_test_p4.pddl"
-problem = "conveyor_p2.pddl"
+problem = "conveyor_high_stack_4.pddl"
 
 # Set verbose
 verbose = True
@@ -35,7 +35,8 @@ db = DatabaseManager(database_dir + "expt_{}.db".format(datetime.now().strftime(
 
 # Prepend directory on domain and problem
 domain = domain_dir + domain
-problem = problem_dir + problem
+# problem = problem_dir + problem
+problem = "../experiments/conveyor_high_stack/" + problem
 
 # Create planner process
 proc = PlannerProcess(date, time)
