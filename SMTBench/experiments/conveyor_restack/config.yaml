@@ -1,0 +1,7 @@
+name: conveyor_restack
+domain: conveyor_domain_transfer
+upper_bound: 20
+database: conveyor_restack
+num_runs_per_expt: 20
+verbose: true
+
