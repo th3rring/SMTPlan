@@ -74,7 +74,7 @@ bool parseArguments(int argc, char *argv[], SMTPlan::PlannerOptions &options) {
   options.solve = true;
   options.lower_bound = 1;
   options.upper_bound = -1;
-  options.cascade_bound = 2;
+  options.cascade_bound = 1;
   options.step_size = 1;
   options.encoder = 0;
 
